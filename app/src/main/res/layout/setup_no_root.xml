@@ -7,6 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -73,15 +74,16 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/next_button"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="nextPage"
-                android:text="@string/next" />
-
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/next_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="nextPage"
+        android:text="@string/next" />
 
 </LinearLayout>

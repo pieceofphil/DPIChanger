@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -29,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="@string/intro_desc"
+                android:textAlignment="center"
                 android:textSize="18sp" />
 
             <TextView
@@ -37,15 +40,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="@string/intro_desc2"
+                android:textAlignment="center"
                 android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/next_button"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="nextPage"
-                android:text="@string/next" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/next_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="nextPage"
+        android:text="@string/next" />
 </LinearLayout>
