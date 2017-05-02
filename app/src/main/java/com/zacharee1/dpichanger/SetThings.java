@@ -49,7 +49,7 @@ public class SetThings {
                             case R.id.apply_dpi:
                                 String newDPI = sharedPreferences.getString("new_dpi_value", String.valueOf(currentActivity.getResources().getDisplayMetrics().densityDpi));
                                 if (isRooted) {
-                                    sudo("wm density" + newDPI);
+                                    sudo("wm density " + newDPI);
                                 } else {
                                     Settings.Secure.putString(currentActivity.getContentResolver(), "display_density_forced", newDPI);
                                 }
