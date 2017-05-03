@@ -11,8 +11,8 @@ enum ModelObject {
     NO_ROOT(R.string.setup_no_root_title, R.layout.setup_no_root),
     DONE(R.string.setup_done_title, R.layout.setup_done);
 
-    private int mTitleResId;
-    private int mLayoutResId;
+    private final int mTitleResId;
+    private final int mLayoutResId;
 
     ModelObject(int titleResId, int layoutResId) {
         mTitleResId = titleResId;

@@ -17,7 +17,6 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/setup_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -26,7 +25,6 @@
                 android:textSize="26sp" />
 
             <TextView
-                android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -38,7 +36,6 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/test_perms"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="100dp"
         android:layout_height="wrap_content"

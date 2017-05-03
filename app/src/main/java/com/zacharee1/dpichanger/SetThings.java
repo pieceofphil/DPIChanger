@@ -3,16 +3,9 @@ package com.zacharee1.dpichanger;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.RemoteException;
-import android.os.UserHandle;
-import android.os.UserManager;
 import android.provider.Settings;
-import android.support.v4.os.UserManagerCompat;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import java.io.DataOutputStream;
@@ -23,10 +16,10 @@ import java.io.IOException;
  */
 
 public class SetThings {
-    private Activity currentActivity;
-    public SharedPreferences sharedPreferences;
-    public SharedPreferences.Editor editor;
-    public boolean isRooted;
+    private final Activity currentActivity;
+    public final SharedPreferences sharedPreferences;
+    public final SharedPreferences.Editor editor;
+    public final boolean isRooted;
 
     public SetThings(Activity activity) {
         currentActivity = activity;
@@ -60,7 +53,7 @@ public class SetThings {
         }
     }
 
-    public void sudo(String...strings) {
+    private void sudo(String... strings) {
         try{
             Process su = Runtime.getRuntime().exec("su");
             DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());

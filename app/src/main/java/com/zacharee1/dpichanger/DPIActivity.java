@@ -16,10 +16,8 @@ import android.widget.TextView;
 public class DPIActivity extends AppCompatActivity {
     private TextInputEditText dpi_val;
     private DisplayMetrics metrics;
-    private int[] buttons;
-    private TextView noRootInstructions;
 
-    public SetThings setThings;
+    private SetThings setThings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,7 @@ public class DPIActivity extends AppCompatActivity {
     private void setup() {
         setThings = new SetThings(this);
 
-        buttons = new int[] {
+        int[] buttons = new int[]{
                 R.id.apply_dpi
         };
         setThings.buttons(buttons);
@@ -63,7 +61,7 @@ public class DPIActivity extends AppCompatActivity {
         dpi_val = (TextInputEditText) findViewById(R.id.dpi_value);
         dpi_val.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(metrics.densityDpi));
 
-        noRootInstructions = (TextView) findViewById(R.id.no_root_instructions);
+        TextView noRootInstructions = (TextView) findViewById(R.id.no_root_instructions);
         if (setThings.isRooted) noRootInstructions.setVisibility(View.GONE);
 
         textListeners();
