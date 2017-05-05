@@ -1,6 +1,7 @@
 package com.zacharee1.dpichanger;
 
 import android.content.Intent;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(new CustomPagerAdapter(this));
     }
 
-    public void nextPage() {
+    public void nextPage(View v) {
         viewPager.setCurrentItem(getItem(+1), true);
     }
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         return viewPager.getCurrentItem() + i;
     }
 
-    public void getRoot() {
+    public void getRoot(View v) {
         boolean isRooted = testSudo();
 
         if (isRooted) {
@@ -77,10 +78,11 @@ public class MainActivity extends AppCompatActivity {
         setThings.editor.apply();
     }
 
-    public void testPerms() {
+    public void testPerms(View v) {
         try {
             Settings.Secure.putInt(getContentResolver(), "adb_set_up", 1);
         } catch (Exception e) {
+            Log.e("TestPerms", e.getMessage());
             Toast.makeText(this, getResources().getText(R.string.adb_setup_failed), Toast.LENGTH_LONG).show();
             return;
         }
@@ -93,33 +95,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean testSudo() {
+        StackTraceElement[] stackTrace = new StackTraceElement[] { null };
         try{
-            Process su = Runtime.getRuntime().exec("su");
-            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-            outputStream.close();
+            Runtime.getRuntime().exec("su");
 
-            DataInputStream inputStream = new DataInputStream(su.getInputStream());
-            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder total = new StringBuilder();
-            String line;
-            while ((line = r.readLine()) != null) {
-                total.append(line).append('\n');
-            }
-
-            inputStream = new DataInputStream(su.getErrorStream());
-            r = new BufferedReader(new InputStreamReader(inputStream));
-            while ((line = r.readLine()) != null) {
-                total.append(line).append('\n');
-            }
-
-            if (!total.toString().toLowerCase().contains("permission denied") && !total.toString().toLowerCase().contains("not found"))
-                return true;
-
-        } catch(IOException e){
-            e.printStackTrace();
+            //    DataInputStream inputStream = new DataInputStream(su.getInputStream());
+            //    BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+            //    StringBuilder total = new StringBuilder();
+            //    String line;
+            //            while ((line = r.readLine()) != null) {
+            //        total.append(line).append('\n');
+            //    }
+            //
+            //    inputStream = new DataInputStream(su.getErrorStream());
+            //    r = new BufferedReader(new InputStreamReader(inputStream));
+            //            while ((line = r.readLine()) != null) {
+            //        total.append(line).append('\n');
+            //    }
+        } catch (Exception e) {
+            stackTrace = e.getStackTrace();
         }
 
-        return false;
+        return stackTrace == null;
     }
 
     private void sudo(@SuppressWarnings("SameParameterValue") String... strings) {

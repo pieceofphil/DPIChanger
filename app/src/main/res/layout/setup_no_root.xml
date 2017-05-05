@@ -57,12 +57,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start"
                             android:fontFamily="monospace"
                             android:paddingEnd="5dp"
                             android:paddingStart="5dp"
                             android:text="adb shell pm grant com.zacharee1.dpichanger android.permission.WRITE_SECURE_SETTINGS"
                             android:textAlignment="textStart"
-                            android:layout_gravity="start"
                             android:textColor="#fff"
                             android:textIsSelectable="true"
                             tools:ignore="HardcodedText"
