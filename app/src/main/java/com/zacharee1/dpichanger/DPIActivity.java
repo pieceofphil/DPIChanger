@@ -49,6 +49,7 @@ public class DPIActivity extends AppCompatActivity {
         }
     }
 
+
     private void setup() {
         setThings = new SetThings(this);
 

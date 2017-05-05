@@ -97,7 +97,11 @@ public class MainActivity extends AppCompatActivity {
     private boolean testSudo() {
         StackTraceElement[] stackTrace = new StackTraceElement[] { null };
         try{
-            Runtime.getRuntime().exec("su");
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+            outputStream.writeBytes("exit\n");
+            outputStream.flush();
+            su.waitFor();
 
             //    DataInputStream inputStream = new DataInputStream(su.getInputStream());
             //    BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
@@ -114,9 +118,10 @@ public class MainActivity extends AppCompatActivity {
             //    }
         } catch (Exception e) {
             stackTrace = e.getStackTrace();
+            e.printStackTrace();
         }
 
-        return stackTrace == null;
+        return stackTrace[0] == null;
     }
 
     private void sudo(@SuppressWarnings("SameParameterValue") String... strings) {
