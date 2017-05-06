@@ -18,6 +18,8 @@ public class DPIActivity extends AppCompatActivity {
     private DisplayMetrics metrics;
 
     private SetThings setThings;
+    private TextInputEditText res_width;
+    private TextInputEditText res_height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,8 @@ public class DPIActivity extends AppCompatActivity {
         setThings = new SetThings(this);
 
         int[] buttons = new int[]{
-                R.id.apply_dpi
+                R.id.apply_dpi,
+                R.id.apply_res,
         };
         setThings.buttons(buttons);
 
@@ -64,6 +67,11 @@ public class DPIActivity extends AppCompatActivity {
 
         TextView noRootInstructions = (TextView) findViewById(R.id.no_root_instructions);
         if (setThings.isRooted) noRootInstructions.setVisibility(View.GONE);
+
+        res_width = (TextInputEditText) findViewById(R.id.res_width);
+        res_height = (TextInputEditText) findViewById(R.id.res_height);
+        res_width.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(metrics.widthPixels));
+        res_height.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(metrics.heightPixels));
 
         textListeners();
     }
@@ -84,6 +92,44 @@ public class DPIActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (s != null) setThings.editor.putString("new_dpi_value", s.toString());
                 else setThings.editor.putString("new_dpi_value", String.valueOf(metrics.densityDpi));
+                setThings.editor.apply();
+            }
+        });
+
+        res_width.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null) setThings.editor.putString("new_width", s.toString());
+                else setThings.editor.putString("new_width", String.valueOf(metrics.widthPixels));
+                setThings.editor.apply();
+            }
+        });
+
+        res_height.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null) setThings.editor.putString("new_height", s.toString());
+                else setThings.editor.putString("new_height", String.valueOf(metrics.heightPixels));
                 setThings.editor.apply();
             }
         });

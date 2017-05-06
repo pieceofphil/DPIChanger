@@ -3,6 +3,7 @@ package com.zacharee1.dpichanger;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -42,9 +43,33 @@ public class SetThings {
                             case R.id.apply_dpi:
                                 String newDPI = sharedPreferences.getString("new_dpi_value", String.valueOf(currentActivity.getResources().getDisplayMetrics().densityDpi));
                                 if (isRooted) {
-                                    sudo("wm density " + newDPI);
+                                    if (Build.VERSION.SDK_INT > 20) {
+                                        sudo("wm density " + newDPI);
+                                    } else {
+                                        sudo("am display-density " + newDPI);
+                                    }
                                 } else {
                                     Settings.Secure.putString(currentActivity.getContentResolver(), "display_density_forced", newDPI);
+                                    if (Build.VERSION.SDK_INT > 16) {
+                                        Settings.Global.putString(currentActivity.getContentResolver(), "display_density_forced", newDPI);
+                                    }
+                                }
+                                break;
+                            case R.id.apply_res:
+                                String newWidth = sharedPreferences.getString("new_width", String.valueOf(currentActivity.getResources().getDisplayMetrics().widthPixels));
+                                String newHeight = sharedPreferences.getString("new_height", String.valueOf(currentActivity.getResources().getDisplayMetrics().heightPixels));
+
+                                if (isRooted) {
+                                    if (Build.VERSION.SDK_INT > 20) {
+                                        sudo("wm size " + newWidth + "x" + newHeight);
+                                    } else {
+                                        sudo("am display-size " + newWidth + "x" + newHeight);
+                                    }
+                                } else {
+                                    Settings.Secure.putString(currentActivity.getContentResolver(), "display_size_forced", newWidth + "," + newHeight);
+                                    if (Build.VERSION.SDK_INT > 16) {
+                                        Settings.Global.putString(currentActivity.getContentResolver(), "display_size_forced", newWidth + "," + newHeight);
+                                    }
                                 }
                         }
                     }

@@ -20,4 +20,7 @@
     <string name="apply">Apply</string>
     <string name="no_root_dpi_apply_instructions">Since you aren\'t rooted, that unfortunately means you\'ll also need to reboot after applying.</string>
     <string name="setup">Setup</string>
+    <string name="dpi">DPI</string>
+    <string name="x">X</string>
+    <string name="resolution">Resolution</string>
 </resources>
