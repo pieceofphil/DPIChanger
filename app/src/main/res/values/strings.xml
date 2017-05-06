@@ -23,4 +23,5 @@
     <string name="dpi">DPI</string>
     <string name="x">X</string>
     <string name="resolution">Resolution</string>
+    <string name="reset">Reset</string>
 </resources>

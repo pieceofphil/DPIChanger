@@ -1,17 +1,26 @@
 package com.zacharee1.dpichanger;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.io.BufferedReader;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class DPIActivity extends AppCompatActivity {
     private TextInputEditText dpi_val;
@@ -38,7 +47,6 @@ public class DPIActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_setup:
                 setThings.editor.putBoolean("isSetup", false);
@@ -58,6 +66,8 @@ public class DPIActivity extends AppCompatActivity {
         int[] buttons = new int[]{
                 R.id.apply_dpi,
                 R.id.apply_res,
+                R.id.reset_dpi,
+                R.id.reset_res,
         };
         setThings.buttons(buttons);
 
@@ -67,11 +77,14 @@ public class DPIActivity extends AppCompatActivity {
 
         TextView noRootInstructions = (TextView) findViewById(R.id.no_root_instructions);
         if (setThings.isRooted) noRootInstructions.setVisibility(View.GONE);
+        noRootInstructions = (TextView) findViewById(R.id.no_root_instructions_res);
+        if (setThings.isRooted) noRootInstructions.setVisibility(View.GONE);
 
         res_width = (TextInputEditText) findViewById(R.id.res_width);
         res_height = (TextInputEditText) findViewById(R.id.res_height);
-        res_width.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(metrics.widthPixels));
-        res_height.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(metrics.heightPixels));
+        int[] dims = setThings.getRes();
+        res_width.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(dims[0]));
+        res_height.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(dims[1]));
 
         textListeners();
     }
@@ -80,7 +93,6 @@ public class DPIActivity extends AppCompatActivity {
         dpi_val.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -110,7 +122,7 @@ public class DPIActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s != null) setThings.editor.putString("new_width", s.toString());
-                else setThings.editor.putString("new_width", String.valueOf(metrics.widthPixels));
+                else setThings.editor.putString("new_width", String.valueOf(setThings.getRes()[0]));
                 setThings.editor.apply();
             }
         });
@@ -129,7 +141,7 @@ public class DPIActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s != null) setThings.editor.putString("new_height", s.toString());
-                else setThings.editor.putString("new_height", String.valueOf(metrics.heightPixels));
+                else setThings.editor.putString("new_height", String.valueOf(setThings.getRes()[1]));
                 setThings.editor.apply();
             }
         });
