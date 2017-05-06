@@ -196,14 +196,27 @@ public class SetThings {
             }
 
             String tot = total.toString();
-            int colon = tot.indexOf(":");
-            int x = tot.indexOf("x");
 
-            String width = tot.substring(colon + 2, x);
-            String height = tot.substring(x + 1, tot.indexOf("\n"));
+            if (tot.indexOf("Override size:") == -1) {
+                int colon = tot.indexOf(":");
+                int x = tot.indexOf("x");
 
-            ret[0] = Integer.decode(width);
-            ret[1] = Integer.decode(height);
+                String width = tot.substring(colon + 2, x);
+                String height = tot.substring(x + 1, tot.indexOf("\n"));
+
+                ret[0] = Integer.decode(width);
+                ret[1] = Integer.decode(height);
+            } else {
+                String override = tot.substring(tot.indexOf("O"));
+                int colon = override.indexOf(":");
+                int x = override.indexOf("x");
+
+                String width = override.substring(colon + 2, x);
+                String height = override.substring(x + 1, tot.indexOf("\n"));
+
+                ret[0] = Integer.decode(width);
+                ret[1] = Integer.decode(height);
+            }
 
             wm.waitFor();
 
