@@ -2,15 +2,16 @@ package com.zacharee1.dpichanger;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.ServiceManager;
+import android.os.UserHandle;
 import android.provider.Settings;
-import android.support.design.widget.TextInputEditText;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.IWindowManager;
 import android.view.View;
 import android.widget.Button;
 
@@ -39,8 +40,16 @@ public class SetThings {
     private String DPI_PREF = "display_density_forced";
     private String RES_PREF = "display_size_forced";
     private int DENSITY_DEFAULT = 160;
+    private String newDPI;
+    private String newWidth;
+    private String newHeight;
+    private final IWindowManager iWindowManager;
+    private final Class<?> iw;
+
 
     public SetThings(Activity activity) {
+        iWindowManager = IWindowManager.Stub.asInterface(ServiceManager.checkService(Context.WINDOW_SERVICE));
+        iw = iWindowManager.getClass();
         currentActivity = activity;
         metrics = currentActivity.getResources().getDisplayMetrics();
         SDK_INT = Build.VERSION.SDK_INT;
@@ -69,67 +78,67 @@ public class SetThings {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final String newDPI = sharedPreferences.getString("new_dpi_value", String.valueOf(metrics.densityDpi));
-                        final String newWidth = sharedPreferences.getString("new_width", String.valueOf(getRes()[0]));
-                        final String newHeight = sharedPreferences.getString("new_height", String.valueOf(getRes()[1]));
+                        newDPI = sharedPreferences.getString("new_dpi_value", String.valueOf(metrics.densityDpi));
+                        newWidth = sharedPreferences.getString("new_width", String.valueOf(getRes()[0]));
+                        newHeight = sharedPreferences.getString("new_height", String.valueOf(getRes()[1]));
 
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 switch (id) {
                                     case R.id.apply_dpi:
-                                        if (isRooted) {
-                                            if (SDK_INT > 20) {
-                                                sudo("wm density " + newDPI);
-                                            } else {
-                                                sudo("am display-density " + newDPI);
-                                            }
+                                        if (SDK_INT > 17) {
+                                            setDPI();
                                         } else {
-                                            Settings.Secure.putString(currentActivity.getContentResolver(), DPI_PREF, newDPI);
-                                            if (SDK_INT > 16) {
-                                                Settings.Global.putString(currentActivity.getContentResolver(), DPI_PREF, newDPI);
+                                            if (isRooted && SDK_INT > 16) {
+                                                sudo("am display-density " + newDPI);
+                                            } else {
+                                                Settings.Secure.putString(currentActivity.getContentResolver(), DPI_PREF, newDPI);
+                                                if (SDK_INT > 16) {
+                                                    Settings.Global.putString(currentActivity.getContentResolver(), DPI_PREF, newDPI);
+                                                }
                                             }
                                         }
                                         break;
                                     case R.id.apply_res:
-                                        if (isRooted) {
-                                            if (SDK_INT > 20) {
-                                                sudo("wm size " + newWidth + "x" + newHeight);
-                                            } else {
-                                                sudo("am display-size " + newWidth + "x" + newHeight);
-                                            }
+                                        if (SDK_INT > 17) {
+                                            setRes();
                                         } else {
-                                            Settings.Secure.putString(currentActivity.getContentResolver(), RES_PREF, newWidth + "," + newHeight);
-                                            if (Build.VERSION.SDK_INT > 16) {
-                                                Settings.Global.putString(currentActivity.getContentResolver(), RES_PREF, newWidth + "," + newHeight);
+                                            if (isRooted) {
+                                                sudo("am display-size " + newWidth + "x" + newHeight);
+                                            } else {
+                                                Settings.Secure.putString(currentActivity.getContentResolver(), RES_PREF, newWidth + "," + newHeight);
+                                                if (Build.VERSION.SDK_INT > 16) {
+                                                    Settings.Global.putString(currentActivity.getContentResolver(), RES_PREF, newWidth + "," + newHeight);
+                                                }
                                             }
                                         }
                                         break;
                                     case R.id.reset_dpi:
-                                        if (isRooted) {
-                                            if (SDK_INT > 20) {
-                                                sudo("wm density reset");
-                                            } else {
-                                                sudo("am display_density reset");
-                                            }
+                                        if (SDK_INT > 17) {
+                                            resetDPI();
                                         } else {
-                                            Settings.Secure.putString(currentActivity.getContentResolver(), DPI_PREF, "");
-                                            if (SDK_INT > 16) {
-                                                Settings.Global.putString(currentActivity.getContentResolver(), DPI_PREF, "");
+                                            if (isRooted && SDK_INT > 16) {
+                                                sudo("am display-density reset");
+                                            } else {
+                                                Settings.Secure.putString(currentActivity.getContentResolver(), DPI_PREF, "");
+                                                if (SDK_INT > 16) {
+                                                    Settings.Global.putString(currentActivity.getContentResolver(), DPI_PREF, "");
+                                                }
                                             }
                                         }
                                         break;
                                     case R.id.reset_res:
-                                        if (isRooted) {
-                                            if (SDK_INT > 20) {
-                                                sudo("wm size reset");
-                                            } else {
-                                                sudo("am display-size reset");
-                                            }
+                                        if (SDK_INT > 17) {
+                                            resetRes();
                                         } else {
-                                            Settings.Secure.putString(currentActivity.getContentResolver(), RES_PREF, "");
-                                            if (SDK_INT > 16) {
-                                                Settings.Global.putString(currentActivity.getContentResolver(), RES_PREF, "");
+                                            if (isRooted) {
+                                                sudo("am display-size reset");
+                                            } else {
+                                                Settings.Secure.putString(currentActivity.getContentResolver(), RES_PREF, "");
+                                                if (SDK_INT > 16) {
+                                                    Settings.Global.putString(currentActivity.getContentResolver(), RES_PREF, "");
+                                                }
                                             }
                                         }
                                         break;
@@ -197,7 +206,7 @@ public class SetThings {
 
             String tot = total.toString();
 
-            if (tot.indexOf("Override size:") == -1) {
+            if (!tot.contains("Override size:")) {
                 int colon = tot.indexOf(":");
                 int x = tot.indexOf("x");
 
@@ -225,5 +234,55 @@ public class SetThings {
         }
 
         return ret;
+    }
+
+    private void setDPI() {
+        try {
+            if (SDK_INT > 24) {
+                iw.getMethod("setForcedDisplayDensityForUser", int.class, int.class, int.class).invoke(iWindowManager, Display.DEFAULT_DISPLAY, Integer.decode(newDPI), UserHandle.USER_CURRENT);
+            } else {
+                iw.getMethod("setForcedDisplayDensity", int.class, int.class).invoke(iWindowManager, Display.DEFAULT_DISPLAY, Integer.decode(newDPI));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void resetDPI() {
+        try {
+            if (SDK_INT > 24) {
+                iw.getMethod("clearForcedDisplayDensityForUser", int.class, int.class).invoke(iWindowManager, Display.DEFAULT_DISPLAY, UserHandle.USER_CURRENT);
+            } else {
+                iw.getMethod("clearForcedDisplayDensity", int.class).invoke(iWindowManager, Display.DEFAULT_DISPLAY);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setRes() {
+        try {
+            iWindowManager.setForcedDisplaySize(Display.DEFAULT_DISPLAY, Integer.decode(newWidth), Integer.decode(newHeight));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void resetRes() {
+        try {
+            iWindowManager.clearForcedDisplaySize(Display.DEFAULT_DISPLAY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Point getResTest() {
+        Point baseSize = new Point();
+        try {
+            iWindowManager.getBaseDisplaySize(Display.DEFAULT_DISPLAY, baseSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return baseSize;
     }
 }

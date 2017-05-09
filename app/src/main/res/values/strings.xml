@@ -24,4 +24,5 @@
     <string name="x">X</string>
     <string name="resolution">Resolution</string>
     <string name="reset">Reset</string>
+    <string name="below_18_warning">Since you are on an Android version below 4.3, you\'ll also need to reboot after applying.</string>
 </resources>

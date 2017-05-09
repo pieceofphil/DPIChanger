@@ -36,7 +36,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -59,10 +59,17 @@
     <TextView
         android:id="@+id/no_root_instructions"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_weight="1"
         android:text="@string/no_root_dpi_apply_instructions"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/below_api_17_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/below_18_warning"
         android:textAlignment="center" />
 
 </LinearLayout>

@@ -1,26 +1,19 @@
 package com.zacharee1.dpichanger;
 
+import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
+import android.graphics.Point;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import java.io.BufferedReader;
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class DPIActivity extends AppCompatActivity {
     private TextInputEditText dpi_val;
@@ -29,6 +22,8 @@ public class DPIActivity extends AppCompatActivity {
     private SetThings setThings;
     private TextInputEditText res_width;
     private TextInputEditText res_height;
+    private Point res;
+    private int[] dims;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +58,9 @@ public class DPIActivity extends AppCompatActivity {
     private void setup() {
         setThings = new SetThings(this);
 
+        res = setThings.getResTest();
+        dims = setThings.getRes();
+
         int[] buttons = new int[]{
                 R.id.apply_dpi,
                 R.id.apply_res,
@@ -76,15 +74,24 @@ public class DPIActivity extends AppCompatActivity {
         dpi_val.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(metrics.densityDpi));
 
         TextView noRootInstructions = (TextView) findViewById(R.id.no_root_instructions);
-        if (setThings.isRooted) noRootInstructions.setVisibility(View.GONE);
+        noRootInstructions.setVisibility(View.GONE);
         noRootInstructions = (TextView) findViewById(R.id.no_root_instructions_res);
-        if (setThings.isRooted) noRootInstructions.setVisibility(View.GONE);
+        noRootInstructions.setVisibility(View.GONE);
+
+        TextView belowApi17 = (TextView) findViewById(R.id.below_api_17_warning);
+        if (setThings.SDK_INT > 16) belowApi17.setVisibility(View.GONE);
+        belowApi17 = (TextView) findViewById(R.id.below_api_17_warning_res);
+        if (setThings.SDK_INT > 16) belowApi17.setVisibility(View.GONE);
 
         res_width = (TextInputEditText) findViewById(R.id.res_width);
         res_height = (TextInputEditText) findViewById(R.id.res_height);
-        int[] dims = setThings.getRes();
-        res_width.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(dims[0]));
-        res_height.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(dims[1]));
+        if (setThings.SDK_INT > 17) {
+            res_width.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(res.x));
+            res_height.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(res.y));
+        } else {
+            res_width.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(dims[0]));
+            res_height.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(dims[1]));
+        }
 
         textListeners();
     }

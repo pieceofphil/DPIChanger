@@ -7,8 +7,8 @@ android {
         applicationId "com.zacharee1.dpichanger"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 5
-        versionName "0.2.2"
+        versionCode 6
+        versionName "0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,7 +21,8 @@ android {
 
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.anggrayudi:android-hidden-api:0.0.7'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -29,8 +30,12 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
-//    compile(name:'RootShell', ext:'aar')
+    //    compile(name:'RootShell', ext:'aar')
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
 //    compile 'com.anggrayudi:android-hidden-api:0.0.6'
+//    compile 'com.anggrayudi:android-hidden-api:0.0.5'
+//    compile files('libs/android-23.jar')
+//    compile files('libs/android-25.jar')
+//    compile files('libs/android-23-fixed.jar')
 }
