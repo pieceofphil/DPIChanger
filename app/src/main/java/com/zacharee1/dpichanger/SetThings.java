@@ -89,56 +89,48 @@ public class SetThings {
                                     case R.id.apply_dpi:
                                         if (SDK_INT > 17) {
                                             setDPI();
+                                        } else if (isRooted && SDK_INT > 16) {
+                                            sudo("am display-density " + newDPI);
                                         } else {
-                                            if (isRooted && SDK_INT > 16) {
-                                                sudo("am display-density " + newDPI);
-                                            } else {
-                                                Settings.Secure.putString(currentActivity.getContentResolver(), DPI_PREF, newDPI);
-                                                if (SDK_INT > 16) {
-                                                    Settings.Global.putString(currentActivity.getContentResolver(), DPI_PREF, newDPI);
-                                                }
+                                            Settings.Secure.putString(currentActivity.getContentResolver(), DPI_PREF, newDPI);
+                                            if (SDK_INT > 16) {
+                                                Settings.Global.putString(currentActivity.getContentResolver(), DPI_PREF, newDPI);
                                             }
                                         }
                                         break;
                                     case R.id.apply_res:
                                         if (SDK_INT > 17) {
                                             setRes();
+                                        } else if (isRooted) {
+                                            sudo("am display-size " + newWidth + "x" + newHeight);
                                         } else {
-                                            if (isRooted) {
-                                                sudo("am display-size " + newWidth + "x" + newHeight);
-                                            } else {
-                                                Settings.Secure.putString(currentActivity.getContentResolver(), RES_PREF, newWidth + "," + newHeight);
-                                                if (Build.VERSION.SDK_INT > 16) {
-                                                    Settings.Global.putString(currentActivity.getContentResolver(), RES_PREF, newWidth + "," + newHeight);
-                                                }
+                                            Settings.Secure.putString(currentActivity.getContentResolver(), RES_PREF, newWidth + "," + newHeight);
+                                            if (Build.VERSION.SDK_INT > 16) {
+                                                Settings.Global.putString(currentActivity.getContentResolver(), RES_PREF, newWidth + "," + newHeight);
                                             }
                                         }
                                         break;
                                     case R.id.reset_dpi:
                                         if (SDK_INT > 17) {
                                             resetDPI();
+                                        } else if (isRooted && SDK_INT > 16) {
+                                            sudo("am display-density reset");
                                         } else {
-                                            if (isRooted && SDK_INT > 16) {
-                                                sudo("am display-density reset");
-                                            } else {
-                                                Settings.Secure.putString(currentActivity.getContentResolver(), DPI_PREF, "");
-                                                if (SDK_INT > 16) {
-                                                    Settings.Global.putString(currentActivity.getContentResolver(), DPI_PREF, "");
-                                                }
+                                            Settings.Secure.putString(currentActivity.getContentResolver(), DPI_PREF, "");
+                                            if (SDK_INT > 16) {
+                                                Settings.Global.putString(currentActivity.getContentResolver(), DPI_PREF, "");
                                             }
                                         }
                                         break;
                                     case R.id.reset_res:
                                         if (SDK_INT > 17) {
                                             resetRes();
+                                        } else if (isRooted) {
+                                            sudo("am display-size reset");
                                         } else {
-                                            if (isRooted) {
-                                                sudo("am display-size reset");
-                                            } else {
-                                                Settings.Secure.putString(currentActivity.getContentResolver(), RES_PREF, "");
-                                                if (SDK_INT > 16) {
-                                                    Settings.Global.putString(currentActivity.getContentResolver(), RES_PREF, "");
-                                                }
+                                            Settings.Secure.putString(currentActivity.getContentResolver(), RES_PREF, "");
+                                            if (SDK_INT > 16) {
+                                                Settings.Global.putString(currentActivity.getContentResolver(), RES_PREF, "");
                                             }
                                         }
                                         break;

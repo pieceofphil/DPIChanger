@@ -58,7 +58,9 @@ public class DPIActivity extends AppCompatActivity {
     private void setup() {
         setThings = new SetThings(this);
 
-        res = setThings.getResTest();
+        if (setThings.SDK_INT > 17) {
+            res = setThings.getResTest();
+        }
         dims = setThings.getRes();
 
         int[] buttons = new int[]{
@@ -74,9 +76,9 @@ public class DPIActivity extends AppCompatActivity {
         dpi_val.setHint(getResources().getText(R.string.dpi_value_hint) + " " + String.valueOf(metrics.densityDpi));
 
         TextView noRootInstructions = (TextView) findViewById(R.id.no_root_instructions);
-        noRootInstructions.setVisibility(View.GONE);
+        if (setThings.SDK_INT > 17 || setThings.isRooted) noRootInstructions.setVisibility(View.GONE);
         noRootInstructions = (TextView) findViewById(R.id.no_root_instructions_res);
-        noRootInstructions.setVisibility(View.GONE);
+        if (setThings.SDK_INT > 17 || setThings.isRooted) noRootInstructions.setVisibility(View.GONE);
 
         TextView belowApi17 = (TextView) findViewById(R.id.below_api_17_warning);
         if (setThings.SDK_INT > 16) belowApi17.setVisibility(View.GONE);
