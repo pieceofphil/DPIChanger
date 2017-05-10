@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">DPI Changer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="setup_intro_title">Erster Start</string>
+    <string name="setup_root_title">Besitzt du Rootrechte?</string>
+    <string name="setup_no_root_title">Keine Rootrechte?</string>
+    <string name="get_root">Erlange Root</string>
+    <string name="root_desc">Falls du gerootet bist, wird das hier einfach. Drücke den unteren Button, um Rootzugriff zu gewähren.</string>
+    <string name="next">Weiter</string>
+    <string name="intro_desc">Diese Einleitung zeigt dir alles um die App zum Laufen zu kriegen.</string>
+    <string name="intro_desc2">Diese App erlaubt dir die DPI deines Mobiltelefons zu ändern, mit oder ohne Rootrechte.</string>
+    <string name="no_root">Führe folgende Kommandos per ADB aus:</string>
+    <string name="test">Test</string>
+    <string name="adb_setup_failed">Sieht aus als wäre das Setup fehlgeschlagen. Sicher, dass du alles eingerichtet hast?.</string>
+    <string name="setup_done">Großartig! Du hast es geschafft! Los gehts, ändere deine DPI.</string>
+    <string name="setup_done_title">Fast fertig!</string>
+    <string name="setup_done_desc">Teste Rootrechte indem du TEST drükst.</string>
+    <string name="dpi_value_hint">Momentan:</string>
+    <string name="apply">Anwenden</string>
+    <string name="no_root_dpi_apply_instructions">Da du nicht gerooted bist, musst du neustarten nach dem Anwenden von Änderungen.</string>
+    <string name="setup">Setup</string>
+    <string name="dpi">DPI</string>
+    <string name="x">X</string>
+    <string name="resolution">Auflösung</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="below_18_warning">Da du eine Android Version <4.3 nutzt, musst du neustarten nach dem Anwenden von Änderungen.</string>
+</resources>
